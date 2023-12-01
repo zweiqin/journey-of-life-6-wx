@@ -1,0 +1,39 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [{
+			"path": "pages/index",
+			"style": {
+				"navigationBarTitleText": "畅享云名片",
+				"navigationStyle": "default"
+			}
+		},{
+			"path": "pages/edit",
+			"style": {
+				"navigationBarTitleText": "编辑名片",
+				"navigationStyle": "default"
+			}
+		}, {
+			"path": "pages/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "default"
+			}
+		},
+		{
+			"path": "pages/agree",
+			"style": {
+				"navigationBarTitleText": "用户协议",
+				"navigationStyle": "default"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-card",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#F8F8F8",
+		"enablePullDownRefresh": false
+	}
+}
