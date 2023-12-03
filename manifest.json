@@ -1,5 +1,5 @@
 {
-    "name" : "基于云开发的微信小程序电子名片-CxCloud",
+    "name" : "card-wx-user",
     "appid" : "__UNI__2AD76E7",
     "description" : "电子名片",
     "versionName" : "1.0.0",
@@ -62,7 +62,7 @@
                 "oauth" : {
                     "apple" : {},
                     "weixin" : {
-                        "appid" : "wxffdd8fa6ec4ef2a0",
+                        "appid" : "wx984383bfd5405df1",
                         "appsecret" : "",
                         "UniversalLinks" : ""
                     },
@@ -71,7 +71,7 @@
                 "ad" : {},
                 "share" : {
                     "weixin" : {
-                        "appid" : "wxffdd8fa6ec4ef2a0",
+                        "appid" : "wx984383bfd5405df1",
                         "UniversalLinks" : ""
                     }
                 },
@@ -86,7 +86,7 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx984383bfd5405df1",
         "setting" : {
             "urlCheck" : false,
             "es6" : false,

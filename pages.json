@@ -2,27 +2,30 @@
 	"easycom": {
 		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	},
-	"pages": [{
-			"path": "pages/index",
+	"pages": [
+		{
+			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "畅享云名片",
+				"navigationBarTitleText": "团蜂名片",
 				"navigationStyle": "default"
 			}
-		},{
-			"path": "pages/edit",
+		},
+		{
+			"path": "pages/edit/edit",
 			"style": {
 				"navigationBarTitleText": "编辑名片",
 				"navigationStyle": "default"
 			}
-		}, {
-			"path": "pages/login",
+		},
+		{
+			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录",
 				"navigationStyle": "default"
 			}
 		},
 		{
-			"path": "pages/agree",
+			"path": "pages/agree/agree",
 			"style": {
 				"navigationBarTitleText": "用户协议",
 				"navigationStyle": "default"
