@@ -1,15 +1,26 @@
 import Vue from 'vue'
 import App from './App'
-import store from './store/index.js'
-import uView from 'uview-ui'
+import store from './store'
+import globalMixin from './mixin/global'
 
+Vue.config.productionTip = false
 Vue.mixin({
 	data() {
 		return {
 			common: {
 				seamingImgUrl(url) {
 					if (!url) return ''
-					return url.startsWith('https://') ? url : 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/' + url
+					// return url.startsWith('https://') ? url : 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/' + url
+					if (url.startsWith('http://')) {
+						return url.replace('http://', 'https://')
+					} else if (url.startsWith('https://')) {
+						return url
+					} else if (url.startsWith('//')) {
+						return 'https:' + url
+					}
+					// https://tuanfengkeji.oss-cn-beijing.aliyuncs.com/tfshop/
+					// https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/
+					return 'https://tuanfengkeji.oss-cn-beijing.aliyuncs.com/tfshop/' + url
 				}
 			}
 		}
@@ -94,15 +105,17 @@ Vue.mixin({
 		},
 
 		isLogin() {
-			return !!this.$store.state.userId
+			return !!(this.$store.getters.userInfo && this.$store.getters.userInfo.token)
 		}
 	}
 })
 
-Vue.use(uView)
-Vue.config.productionTip = false
+Vue.use(globalMixin)
+
+Vue.config.ignoredElements.push('wx-open-launch-weapp')
 
 App.mpType = 'app'
+
 const app = new Vue({
 	...App,
 	store

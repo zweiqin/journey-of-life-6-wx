@@ -3,7 +3,7 @@
 		<view class="content-box">
 			<view class="top-main-box">
 				<view class="zzbg">
-					<image class="mpimg" src="/static/images/mpbg1.jpg" mode="widthFix"></image>
+					<image class="mpimg" src="../../static/images/userimg.png" mode="widthFix"></image>
 				</view>
 				<view class="topmain">
 					<view class="leftimg">
@@ -98,16 +98,14 @@
 </template>
 
 <script>
-import {
-	request
-} from '@/utils/request'
 import { USER_INFO } from '../../constant'
+
 export default {
 	name: 'Index',
 	data() {
 		return {
 			id: '',
-			headerImg: '/static/images/userimg.png',
+			headerImg: require('../../static/images/userimg.png'),
 			cardObj: {},
 			visitorList: [],
 			visitorCount: 0,
@@ -139,7 +137,7 @@ export default {
 					this.cardObj = card
 					this.visitorCount = visitorList.total
 					visitorList.items.forEach((arr, index) => {
-						if (arr.head_img) { this.headerList.push(arr.head_img) } else { this.headerList.push('/static/images/userimg.png') }
+						if (arr.head_img) { this.headerList.push(arr.head_img) } else { this.headerList.push(require('../../static/images/userimg.png')) }
 					})
 				}
 			} else {
@@ -161,7 +159,7 @@ export default {
 					this.cardObj = mycard
 					this.visitorCount = myVisitorList.total
 					myVisitorList.items.forEach((arr, index) => {
-						if (arr.head_img) { this.headerList.push(arr.head_img) } else { this.headerList.push('/static/images/userimg.png') }
+						if (arr.head_img) { this.headerList.push(arr.head_img) } else { this.headerList.push(require('../../static/images/userimg.png')) }
 					})
 				}
 			}
@@ -197,7 +195,7 @@ export default {
 			this.cardObj = card
 			this.visitorCount = visitorList.total
 			visitorList.items.forEach((arr, index) => {
-				if (arr.head_img) { this.headerList.push(arr.head_img) } else { this.headerList.push('/static/images/userimg.png') }
+				if (arr.head_img) { this.headerList.push(arr.head_img) } else { this.headerList.push(require('../../static/images/userimg.png')) }
 			})
 		},
 		onAdd() {

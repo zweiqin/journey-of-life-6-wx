@@ -2,6 +2,7 @@
 import { USER_ID, T_STORAGE_KEY, USER_INFO } from '../constant'
 // import { isNull } from 'lodash-es'
 
+
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
  * @param {Number, String} data 数字
@@ -84,14 +85,14 @@ export const getUserId = () => {
 }
 
 /**
- * 获取新团蜂token
+ * 获取新团蜂用户id
  * @returns
  */
 
-export const getStorageKeyToken = () => {
-	const userInfo = uni.getStorageSync(USER_INFO)
-	if (!userInfo || !userInfo.userId) {
-		return uni.showModal({
+export const getStorageUserId = () => {
+	const userInfo = uni.getStorageSync(T_STORAGE_KEY) || {}
+	if (!userInfo.buyerUserId) {
+		uni.showModal({
 			title: '提示',
 			content: '您还未登录，是否去登录？',
 			success(res) {
@@ -104,9 +105,36 @@ export const getStorageKeyToken = () => {
 				}
 			}
 		})
+		return
+	}
+	return userInfo.buyerUserId
+}
+
+/**
+ * 获取新团蜂token
+ * @returns
+ */
+
+export const getStorageKeyToken = () => {
+	const userInfo = uni.getStorageSync(USER_INFO)
+	if (!userInfo || !userInfo.userId) {
+		uni.showModal({
+			title: '提示',
+			content: '您还未登录，是否去登录？',
+			success(res) {
+				if (res.confirm) {
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+				} else if (res.cancel) {
+					// uni.navigateBack();
+				}
+			}
+		})
+		return
 	}
 	if (!userInfo || !userInfo.phone) {
-		return uni.showModal({
+		uni.showModal({
 			title: '提示',
 			content: '未绑定手机号码，是否去绑定？',
 			success(res) {
@@ -115,14 +143,15 @@ export const getStorageKeyToken = () => {
 						url: '/'
 					})
 				} else if (res.cancel) {
-					// uni.navigateBack();
+					// uni.navigateBack();
 				}
 			}
 		})
+		return
 	}
 	const storageKey = uni.getStorageSync(T_STORAGE_KEY)
 	if (!storageKey || !storageKey.token) {
-		return uni.showModal({
+		uni.showModal({
 			title: '提示',
 			content: '系统出错，请重新登陆',
 			success(res) {
@@ -131,10 +160,11 @@ export const getStorageKeyToken = () => {
 						url: '/pages/login/login'
 					})
 				} else if (res.cancel) {
-					// uni.navigateBack();
+					// uni.navigateBack();
 				}
 			}
 		})
+		return
 	}
 	return storageKey.token
 }
@@ -366,16 +396,24 @@ export function isVideoSource(src) {
 
 export const saveImg = (url, cb) => {
 	// #ifdef H5
-	const uniappA = document.createElement('a')
-	uniappA.download = ''
-	uniappA.href = url
-	document.body.appendChild(uniappA)
-	uniappA.click()
-	uniappA.remove()
-	cb && typeof cb === 'function' && cb()
+	if (isInWx()) {
+		uni.showToast({
+			title: '请长按图片保存',
+			duration: 2000,
+			icon: 'none'
+		})
+	} else {
+		const uniappA = document.createElement('a')
+		uniappA.download = ''
+		uniappA.href = url
+		document.body.appendChild(uniappA)
+		uniappA.click()
+		uniappA.remove()
+		cb && typeof cb === 'function' && cb()
+	}
 	// #endif
 
-	// #ifdef APP
+	// #ifdef APP || MP
 	uni.saveImageToPhotosAlbum({
 		filePath: url,
 		success() {

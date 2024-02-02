@@ -1,8 +1,10 @@
+
 export { AnotherTFRequest } from './AnotherTFRequest.js'
 export {
 	fomartNumber,
 	removeCache,
 	getUserId,
+	getStorageUserId,
 	getStorageKeyToken,
 	checkWhoami,
 	useCopy,

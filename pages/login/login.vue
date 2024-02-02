@@ -1,22 +1,18 @@
 <template>
 	<view>
 		<view class="login-main">
-			<image class="user" src="/static/images/userimg.png"></image>
+			<image class="user" src="../../static/images/userimg.png"></image>
 			<view class="name">您好 </view>
 			<view class="tip">为了您的最佳体验，请登录</view>
 		</view>
 
 		<button class="lgin-btn" open-type="getUserInfo" lang="zh_CN" withCredentials="true" @getuserinfo="mpWxLogin">
-			<image src="/static/images/wxa.png"></image>
 			<view class="text">微信一键登录</view>
 		</button>
 	</view>
 </template>
 
 <script>
-import {
-	request
-} from '@/utils/request'
 import { USER_INFO } from '../../constant'
 export default {
 	name: 'Login',
