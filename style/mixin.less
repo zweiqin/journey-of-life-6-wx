@@ -1,0 +1,33 @@
+.flex(@align: center, @justify: space-between, @direction: row) {
+  display: flex;
+  align-items: @align;
+  justify-content: @justify;
+  flex-direction: @direction;
+}
+
+.border(@color: #000, @line: 1upx, @style: solid) {
+  border: @line @style @color;
+}
+
+.border-bottom(@color: #000, @line: 1upx, @style: solid) {
+  border-bottom: @line @style @color;
+}
+
+.img(@size: 200upx, @radius: 0) {
+  width: @size;
+  height: @size;
+  object-fit: cover;
+  border-radius: @radius;
+}
+
+.margin(@top, @bottom) {
+  margin: @top 0 @bottom 0;
+}
+
+.h-flex(@justifyContent: space-between, @direction: row, @wrap: nowrap) {
+  display: flex;
+  align-items: center;
+  justify-content: @justifyContent;
+  flex-wrap: @wrap;
+  flex-direction: @direction;
+}

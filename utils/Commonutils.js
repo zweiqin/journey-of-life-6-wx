@@ -140,7 +140,7 @@ export const getStorageKeyToken = () => {
 			success(res) {
 				if (res.confirm) {
 					uni.switchTab({
-						url: '/'
+						url: '/pages/index/index'
 					})
 				} else if (res.cancel) {
 					// uni.navigateBack();

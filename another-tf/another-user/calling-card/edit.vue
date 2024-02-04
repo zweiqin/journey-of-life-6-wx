@@ -1,48 +1,40 @@
 <template>
 	<view>
 		<view class="wrap">
-			<u--form ref="form1" label-position="left" :model="cardObj" :rules="rules" label-width="80">
-				<u-form-item label="姓名" prop="cardObj.name" border-bottom>
-					<u--input v-model="cardObj.name" border="none"></u--input>
-				</u-form-item>
-				<u-form-item label="电话" prop="cardObj.phone" border-bottom>
-					<u--input v-model="cardObj.phone" border="none"></u--input>
-				</u-form-item>
-				<u-form-item label="公司" prop="company" border-bottom>
-					<u--input v-model="cardObj.company" border="none"></u--input>
-				</u-form-item>
-				<u-form-item label="地址" prop="address" border-bottom>
-					<u--input v-model="cardObj.address" border="none"></u--input>
-				</u-form-item>
-				<u-form-item label="职位" prop="job" border-bottom>
-					<u--input v-model="cardObj.job" border="none"></u--input>
-				</u-form-item>
-				<u-form-item label="微信" prop="wechat" border-bottom>
-					<u--input v-model="cardObj.wechat" border="none"></u--input>
-				</u-form-item>
-				<u-form-item label="QQ" prop="wechat" border-bottom>
-					<u--input v-model="cardObj.qq" border="none"></u--input>
-				</u-form-item>
-				<u-form-item label="邮箱" prop="email" border-bottom>
-					<u--input v-model="cardObj.email" border="none"></u--input>
-				</u-form-item>
-				<u-form-item label="业务介绍" prop="intro" border-bottom>
-					<u--textarea v-model="cardObj.intro" border="none"></u--textarea>
-				</u-form-item>
-				<u-form-item label="头像" prop="intro" border-bottom>
-					<u-upload
-						:file-list="fileList1" name="5" :max-count="1" :preview-full-image="true"
-						@afterRead="afterRead"
-						@delete="deletePic"
-					>
-					</u-upload>
-				</u-form-item>
-			</u--form>
+			<tui-form ref="refLoginForm" :show-message="false">
+				<view>
+					<tui-input
+						v-model="cardObj.name" label="姓名" type="number" padding="26rpx 20rpx 26rpx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32rpx;" label-color="#ffffff" border-color="#EA5B1D"
+						placeholder="请输入姓名" background-color="transparent" :border-top="false" color="#ffffff"
+						style="border-bottom: 2rpx solid #ffffff;"
+					></tui-input>
+				</view>
+				<view>
+					<tui-input
+						v-model="cardObj.phone" label="+ 86" type="number" padding="26rpx 20rpx 26rpx 0"
+						placeholder-style="color: #f3c1c4;font-size: 32rpx;" label-color="#ffffff" border-color="#EA5B1D"
+						placeholder="请输入电话" background-color="transparent" :border-top="false" color="#ffffff"
+						style="border-bottom: 2rpx solid #ffffff;"
+					></tui-input>
+				</view>
+				<view>
+					<JUpload
+						title="头像" :img-url="common.seamingImgUrl(cardObj.head_img)" @upload="handleSaveHeadImg"
+						@delete="cardObj.head_img = '' || $forceUpdate()"
+					></JUpload>
+				</view>
+			</tui-form>
 			<view class="wrap">
 				<view style="float:left;width: 40px;">
-					<u-checkbox-group v-model="checked" change="changeClick()">
-						<u-checkbox shape="circle"></u-checkbox>
-					</u-checkbox-group>
+					<tui-icon
+						v-if="checked" name="circle-fill" :size="34" unit="rpx"
+						color="#c5aa7b" margin="0 15rpx 0 0" @click="checked = false"
+					></tui-icon>
+					<tui-icon
+						v-else name="circle" :size="34" unit="rpx"
+						color="#cccccc" margin="0 15rpx 0 0" @click="checked = true"
+					></tui-icon>
 				</view>
 				<text style="float:left;color:#04498c" @click="goAgree()">同意用户服务协议&隐私政策</text>
 			</view>
@@ -103,6 +95,10 @@ export default {
 		}
 	},
 	methods: {
+		handleSaveHeadImg() {
+			this.cardObj.head_img = e
+			this.$forceUpdate()
+		},
 		goAgree() {
 			uni.navigateTo({
 				url: '/pages/agree'

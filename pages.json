@@ -25,20 +25,26 @@
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
+		},
+		{
+			"path": "pages/login/register",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
 		}
 	],
 	"subPackages": [
 		{
-			"root": "user",
+			"root": "another-tf",
 			"pages": [
 				{
-					"path": "account/agree/agree",
+					"path": "another-user/calling-card/agree",
 					"style": {
 						"navigationBarTitleText": "用户协议"
 					}
 				},
 				{
-					"path": "service/edit/edit",
+					"path": "another-user/calling-card/edit",
 					"style": {
 						"navigationBarTitleText": "编辑名片"
 					}

@@ -22,5 +22,6 @@ export {
 	jumpToOtherProject,
 	isH5InWebview,
 	isVideo,
-	saveImg
+	saveImg,
+	getUrlCode
 } from './Commonutils'

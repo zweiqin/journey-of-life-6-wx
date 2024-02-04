@@ -38,6 +38,11 @@ export default {
 		// 画布设备 1 小程序，2 H5，3 App 4 电脑
 		terminal: ''
 	},
+	data() {
+		return {
+			scene: ''
+		}
+	},
 	mounted() {
 		this.$store.dispatch('app/getUserSystermInfo')
 		const launchOptions = uni.getLaunchOptionsSync()
