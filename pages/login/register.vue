@@ -9,7 +9,7 @@
 			<tui-form ref="form" :show-message="false">
 				<view class="formItem">
 					<tui-input
-						v-model="registerQuery.phone" placeholder-class="inputs" label="" border-color="#EA5B1D"
+						v-model="registerQuery.phone" placeholder-class="inputs" border-color="#EA5B1D"
 						placeholder="请输入电话号码" :border-top="false" color="#222229" clearable
 						size="34"
 					></tui-input>
@@ -19,7 +19,6 @@
 						v-model="registerQuery.verificationCode" padding="26rpx 20rpx 26rpx 0"
 						placeholder-style="color: #f3c1c4;font-size: 32rpx;" background-color="transparent" :border-top="false"
 						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入验证码" color="#222229"
-						style="border-bottom: 2rpx solid #ffffff;"
 					>
 						<template #right>
 							<tui-countdown-verify
@@ -32,7 +31,7 @@
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="registerQuery.password" placeholder-class="inputs" type="password" label=""
+						v-model="registerQuery.password" placeholder-class="inputs" type="password"
 						border-color="#EA5B1D" placeholder="请输入密码" :border-top="false" color="#222229"
 						clearable
 						size="34"
@@ -40,7 +39,7 @@
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="registerQuery.passwordAgain" placeholder-class="inputs" type="password" label=""
+						v-model="registerQuery.passwordAgain" placeholder-class="inputs" type="password"
 						border-color="#EA5B1D" placeholder="请再次确认密码" :border-top="false" color="#222229"
 						clearable
 						size="34"

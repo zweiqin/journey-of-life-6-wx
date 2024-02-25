@@ -1,107 +1,356 @@
 <template>
 	<view class="index-container">
 		<TuanAppShim bg="transparent"></TuanAppShim>
-		<view class="content-box">
-			<view class="top-main-box">
-				<view class="zzbg">
-					<image class="mpimg" src="../../static/images/userimg.png" mode="widthFix"></image>
-				</view>
-				<view class="topmain">
-					<view class="leftimg">
-						<image style="width: 60rpx;height: 60rpx;" :src="cardObj.head_img"></image>
+		<view style="padding-top: 30rpx;font-size: 28rpx;">
+			<view v-if="electronicCardInfo.buyerId">
+
+				<view style="padding: 20rpx;background-color: #476088;color: #ffffff;border-radius: 14rpx;">
+					<view
+						v-if="(electronicCardInfo.styleId === 1) || (electronicCardInfo.styleId === 2) || (electronicCardInfo.styleId === 3)"
+					>
+						<view style="display: flex;align-items: center;">
+							<view style="flex: 1;display: flex;align-items: center;">
+								<view style="text-align: center;">
+									<image
+										:src="common.seamingImgUrl(electronicCardInfo.headImage)"
+										style="width: 102rpx;height: 102rpx;border-radius: 50%;"
+									></image>
+								</view>
+								<view style="margin-left: 28rpx;">
+									<view style="display: flex;align-items: center;">
+										<view>{{ electronicCardInfo.name }}</view>
+										<view style="margin-left: 20rpx;">
+											<text v-if="electronicCardInfo.sex == 1">男</text>
+											<text v-else-if="electronicCardInfo.sex == 2">女</text>
+											<text v-else>未知</text>
+										</view>
+									</view>
+									<view style="font-size: 26rpx;">{{ electronicCardInfo.birthday }}</view>
+								</view>
+							</view>
+							<view v-if="electronicCardInfo.ifBlack" style="margin-left: 20rpx;font-weight: bold;">已加入黑名单</view>
+						</view>
+						<view style="margin-top: 12rpx;">
+							<view style="display: flex;justify-content: space-between;align-items: center;">
+								<view style="flex: 2;display: flex;align-items: flex-start;padding-top: 8rpx;">
+									<tui-icon :size="28" color="#dedcdc" name="mobile" unit="rpx" margin="0 18rpx 0 0"></tui-icon>
+									<view>{{ electronicCardInfo.phone }}</view>
+								</view>
+								<view
+									v-if="electronicCardInfo.landline"
+									style="flex: 3;display: flex;align-items: flex-start;padding-top: 8rpx;"
+								>
+									<tui-icon :size="28" color="#dedcdc" name="voipphone" unit="rpx" margin="0 18rpx 0 0"></tui-icon>
+									<view>{{ electronicCardInfo.landline }}</view>
+								</view>
+							</view>
+							<view style="display: flex;justify-content: space-between;align-items: center;">
+								<view
+									v-if="electronicCardInfo.mailbox"
+									style="flex: 2;display: flex;align-items: flex-start;padding-top: 8rpx;"
+								>
+									<tui-icon :size="28" color="#dedcdc" name="mail" unit="rpx" margin="0 18rpx 0 0"></tui-icon>
+									<view>{{ electronicCardInfo.mailbox }}</view>
+								</view>
+								<view
+									v-if="electronicCardInfo.weChatSignal"
+									style="flex: 3;display: flex;align-items: flex-start;padding-top: 8rpx;"
+								>
+									<tui-icon :size="28" color="#dedcdc" name="wechat" unit="rpx" margin="0 18rpx 0 0"></tui-icon>
+									<view>{{ electronicCardInfo.weChatSignal }}</view>
+								</view>
+							</view>
+							<view
+								v-if="electronicCardInfo.personalProfile"
+								style="display: flex;align-items: flex-start;padding-top: 8rpx;"
+							>
+								<tui-icon :size="28" color="#dedcdc" name="message" unit="rpx" margin="0 18rpx 0 0"></tui-icon>
+								<view>{{ electronicCardInfo.personalProfile }}</view>
+							</view>
+							<view style="display: flex;align-items: flex-start;padding-top: 8rpx;">
+								<tui-icon :size="28" color="#dedcdc" name="position" unit="rpx" margin="0 18rpx 0 0"></tui-icon>
+								<view>{{ electronicCardInfo.address }}</view>
+							</view>
+						</view>
 					</view>
-					<view class="rightcont">
-						<view class="name">{{ cardObj.name }}</view>
-						<view class="tip">{{ cardObj.job }}</view>
-						<view class="tipa">{{ cardObj.company }}</view>
+					<view v-else style="padding-bottom: 45rpx;">
+						<tui-no-data :fixed="false">您还未设置名片样式～</tui-no-data>
+					</view>
+					<view
+						v-if="electronicLabelInfo && electronicLabelInfo.length"
+						style="display: flex;flex-wrap: wrap;padding: 8rpx 0;"
+					>
+						<view
+							v-for="item in electronicLabelInfo" :key="item.labelId"
+							style="margin: 8rpx 0 0 12rpx;padding: 6rpx 16rpx;border: 2rpx solid #d8d3d3;background-color: #292d3c;border-radius: 6rpx;"
+						>
+							{{ item.labelName }}
+						</view>
 					</view>
 				</view>
-				<view class="btnmain">
-					<text>{{ cardObj.address }}</text>
+				<view style="margin: 14rpx -30rpx 0;padding: 16rpx 16rpx 0;background-color: #e8e8e8;">
+					<view style="margin-left: 30rpx;font-size: 30rpx;font-weight: bold;">图片介绍</view>
+					<view style="margin-top: 18rpx;">
+						<swiper
+							autoplay :interval="3000" circular :previous-margin="previousMargin"
+							:next-margin="nextMargin"
+							:duration="1000" style="height: 328rpx;" @change="handleSwiperChange"
+						>
+							<swiper-item v-for="(item, index) in electronicCardInfo.pictureIntroduction.split(',')" :key="index">
+								<tui-lazyload-img
+									mode="scaleToFill" width="600rpx" height="100%" radius="20rpx"
+									:src="common.seamingImgUrl(item)"
+								></tui-lazyload-img>
+							</swiper-item>
+						</swiper>
+					</view>
 				</view>
+				<view
+					v-if="electronicCardInfo.isEnterprise"
+					style="padding: 20rpx;margin-top: 30rpx;background-color: #2d3d5a;color: #ffffff;border-radius: 14rpx;"
+				>
+					<view>企业信息</view>
+					<view style="margin-top: 20rpx;display: flex;justify-content: space-between;align-items: center;">
+						<view style="text-align: center;">
+							<image
+								:src="common.seamingImgUrl(electronicCardInfo.enterpriseHeadImage)"
+								style="width: 102rpx;height: 102rpx;border-radius: 50%;"
+							></image>
+						</view>
+						<view style="flex: 1;margin-left: 28rpx;">
+							<view>企业名称：{{ electronicCardInfo.enterpriseName }}</view>
+							<view>职务：{{ electronicCardInfo.enterpriseDuties || '--' }}</view>
+						</view>
+					</view>
+				</view>
+
+				<view>
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;padding-bottom: 20rpx;border-bottom: 2rpx solid #cccccc;"
+					>
+						<tui-button type="blue" width="220rpx" height="68rpx" margin="20rpx auto 0" open-type="share">
+							分享名片
+						</tui-button>
+						<tui-button type="blue" width="220rpx" height="68rpx" margin="20rpx auto 0" @click="onAdd()">
+							同步到通讯录
+						</tui-button>
+						<tui-button
+							type="blue" width="220rpx" height="68rpx" margin="20rpx auto 0"
+							@click="go(`/another-tf/another-user/calling-card-management/calling-card-form?id=${electronicCardInfo.buyerId}`)"
+						>
+							编辑名片
+						</tui-button>
+					</view>
+					<tui-list-view>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<view>
+									<view v-if="electronicLabelInfo && electronicLabelInfo.length">标签</view>
+									<view v-else>您还没设置名片标签</view>
+								</view>
+								<view style="flex: 1;text-align: right;">
+									<view
+										v-if="electronicLabelInfo && electronicLabelInfo.length"
+										style="display: inline-block;width: fit-content;"
+									>
+										<tui-button
+											type="blue" width="220rpx" height="68rpx" margin="20rpx 0 0"
+											@click="go(`/another-tf/another-user/calling-card-management/label-list`)"
+										>
+											管理标签
+										</tui-button>
+									</view>
+									<view v-else style="display: inline-block;width: fit-content;">
+										<tui-button
+											type="blue" width="220rpx" height="68rpx" margin="20rpx 0 0"
+											@click="go(`/another-tf/another-user/calling-card-management/card-label-form`)"
+										>
+											新建标签
+										</tui-button>
+									</view>
+								</view>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>是否启用：</text>
+								<view style="flex: 1;text-align: right;">
+									<text v-if="electronicCardInfo.state">是</text>
+									<text v-else>否</text>
+								</view>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>是否加入黑名单：</text>
+								<view style="flex: 1;text-align: right;">
+									<text v-if="electronicCardInfo.ifBlack">是</text>
+									<text v-else>否</text>
+								</view>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>名片头像：</text>
+								<view style="flex: 1;text-align: right;">
+									<image
+										:src="common.seamingImgUrl(electronicCardInfo.headImage)"
+										style="width: 102rpx;height: 102rpx;border-radius: 50%;"
+									></image>
+								</view>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>用户ID：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.buyerId }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>昵称：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.name }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>性别：</text>
+								<view style="flex: 1;text-align: right;">
+									<text v-if="electronicCardInfo.sex == 1">男</text>
+									<text v-else-if="electronicCardInfo.sex == 2">女</text>
+									<text v-else>未知</text>
+								</view>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>生日：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.birthday }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>手机号：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.phone }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>地址：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.address }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>邮箱：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.mailbox }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>微信号：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.weChatSignal }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>座机：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.landline }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>个人简介：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.personalProfile }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>创建时间：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.createTime }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>更新时间：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.updateTime }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>样式ID：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.styleId }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>用户标签ID：</text>
+								<text style="flex: 1;text-align: right;">{{ electronicCardInfo.label }}</text>
+							</view>
+						</tui-list-cell>
+						<tui-list-cell background-color="transparent" padding="20rpx 0">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+								<text>是否企业：</text>
+								<view style="flex: 1;text-align: right;">
+									<text v-if="electronicCardInfo.isEnterprise">是</text>
+									<text v-else>否</text>
+								</view>
+							</view>
+						</tui-list-cell>
+						<view v-if="electronicCardInfo.isEnterprise">
+							<tui-list-cell background-color="transparent" padding="20rpx 0">
+								<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+									<text>企业头像：</text>
+									<view style="flex: 1;text-align: right;">
+										<image
+											:src="common.seamingImgUrl(electronicCardInfo.enterpriseHeadImage)"
+											style="width: 102rpx;height: 102rpx;border-radius: 50%;"
+										></image>
+									</view>
+								</view>
+							</tui-list-cell>
+							<tui-list-cell background-color="transparent" padding="20rpx 0">
+								<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+									<text>企业名称：</text>
+									<text style="flex: 1;text-align: right;">{{ electronicCardInfo.enterpriseName }}</text>
+								</view>
+							</tui-list-cell>
+							<tui-list-cell background-color="transparent" padding="20rpx 0">
+								<view style="display: flex;justify-content: space-between;align-items: center;padding-left: 4rpx;">
+									<text>担任职务：</text>
+									<text style="flex: 1;text-align: right;">{{ electronicCardInfo.enterpriseDuties }}</text>
+								</view>
+							</tui-list-cell>
+						</view>
+					</tui-list-view>
+				</view>
+			</view>
+			<view v-else style="padding-bottom: 45rpx;">
+				<tui-no-data :fixed="false">您还未设置名片～</tui-no-data>
+				<tui-button
+					type="blue" width="220rpx" height="68rpx" margin="20rpx auto 0"
+					@click="go(`/another-tf/another-user/calling-card-management/calling-card-form`)"
+				>
+					新建名片
+				</tui-button>
 			</view>
 
-			<view class="top-mainb">
-				<view class="conta">
-					<view v-if="cardObj.phone" class="cont" @click="onPhone()">
-						<view class="box">
-							<view class="right">
-								<text class="tit">拨打电话</text>
-								<text>{{ cardObj.phone }}</text>
-							</view>
-						</view>
-					</view>
-					<view v-if="cardObj.wechat" class="cont" @click="onCopy(cardObj.wechat)">
-						<view class="box">
-							<view class="right">
-								<text class="tit">加微信</text>
-								<text>{{ cardObj.wechat }}</text>
-							</view>
-						</view>
-					</view>
-					<view v-if="cardObj.qq" class="cont" @click="onCopy(cardObj.qq)">
-						<view class="box">
-							<view class="right">
-								<text class="tit">QQ</text>
-								<text>{{ cardObj.qq }}</text>
-							</view>
-						</view>
-					</view>
-					<view v-if="cardObj.email" class="cont" @click="onCopy(cardObj.email)">
-						<view class="box">
-							<view class="right">
-								<text class="tit">邮箱</text>
-								<text>{{ cardObj.email }}</text>
-							</view>
-						</view>
-					</view>
-				</view>
+			<view>
 			</view>
-			<view class="top-maina">
-				<button class="left" @click="onAdd()">
-					同步到通讯录
-				</button>
-				<button class="right" open-type="share">
-					分享名片
-				</button>
-			</view>
-			<view class="top-mainc">
-				<view class="left">
-					<tui-image-group
-						:image-list="headerList.map((item, index) => ({ id: index, src: item || headerImg }))"
-						width="35rpx" height="35rpx" radius="0"
-					></tui-image-group>
-					<text>{{ visitorCount }}人浏览</text>
-				</view>
-			</view>
-			<view class="top-main-tit">
-				<text>业务介绍</text>
-			</view>
-			<view class="top-maind">
-				<view class="topmain">
-					<view class="leftimg">
-						<image style="width: 60rpx;height: 60rpx;" :src="cardObj.head_img"></image>
-					</view>
-					<view class="rightcont">
-						<view v-if="!cardObj.intro" class="name">Hi~欢迎访问我的名片，了解更多内容请直接咨询我。</view>
-						<view v-if="cardObj.intro" class="name">{{ cardObj.intro }}</view>
-					</view>
-				</view>
-			</view>
-
 		</view>
-		<view class="bottom-block"></view>
-		<view class="bottombtn" type="primary" @click="gotoEdit">编辑我的名片</view>
 	</view>
 </template>
 
 <script>
-import { USER_INFO } from '../../constant'
+import { mapGetters } from 'vuex'
 
 export default {
 	name: 'Index',
 	data() {
 		return {
+			previousMargin: '0',
+			nextMargin: '80rpx',
+
 			id: '',
 			headerImg: require('../../static/images/userimg.png'),
 			cardObj: {},
@@ -172,7 +421,23 @@ export default {
 			path: '/pages/index?id=' + this.id
 		}
 	},
+	computed: {
+		...mapGetters(['electronicCardInfo', 'electronicLabelInfo'])
+	},
 	methods: {
+		handleSwiperChange(e) {
+			if (this.$store.getters.electronicCardInfo.pictureIntroduction && this.$store.getters.electronicCardInfo.pictureIntroduction.split(',').length === 1) {
+				console.log(e)
+				if (e.detail.current === 1) {
+					this.nextMargin = '0'
+					this.previousMargin = '80rpx'
+				} else {
+					this.nextMargin = '80rpx'
+					this.previousMargin = '0'
+				}
+			}
+		},
+
 		async getDefault() {
 			const card = await request('uni-card', 'getCard', {
 				id: '61b30b8091a7500001dea375',
@@ -223,33 +488,6 @@ export default {
 					console.log('调用失败!')
 				}
 			})
-		},
-		onCopy(data) {
-			uni.setClipboardData({
-				data, // 要被复制的内容
-				success() {
-					// 重点~做笔记
-					// 在success中加入uni.hideToast()可以解决
-					uni.showToast({
-						title: '复制成功',
-						duration: 2000,
-						icon: 'none'
-					})
-					// 以下就可自定义操作了~
-				},
-				fail(err) {
-					uni.showToast({
-						title: '复制失败',
-						duration: 2000,
-						icon: 'none'
-					})
-				}
-			})
-		},
-		gotoEdit() {
-			uni.navigateTo({
-				url: '/pages/edit/edit'
-			})
 		}
 	}
 }
@@ -258,327 +496,20 @@ export default {
 <style lang="less" scoped>
 .index-container {
 	min-height: 100vh;
-	padding: 0 0 120rpx;
+	padding: 0 30rpx 120rpx;
 	background-color: #fefefe;
 	box-sizing: border-box;
 
-	.content-box {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 0 5%;
+	/deep/ .tui-nodata-box {
+		padding-top: 60rpx;
+
+		.tui-tips-content {
+			color: #ffffff;
+		}
 	}
 
-	.content-box .top-main-box {
-		width: 100%;
-		box-sizing: border-box;
-		border-radius: 15rpx;
-		height: 52vw;
-		overflow: hidden;
-		position: relative;
-		box-shadow: 0px 0px 10px #cccccc;
-	}
-
-	.content-box .top-main-box .zzbg {
-		width: 100%;
-		position: absolute;
-		top: 0;
-		left: 0;
-		background: rgba(139, 139, 139, 0.5);
-		z-index: 1;
-	}
-
-	.content-box .top-main-box .mpimg {
-		width: 100%;
-	}
-
-	.content-box .top-main-box .topmain {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 40rpx 5%;
-		display: flex;
-		align-items: flex-start;
-		position: relative;
-		z-index: 4;
-	}
-
-	.content-box .top-main-box .topmain .leftimg {
-		width: 150rpx;
-		height: 150rpx;
-		border-radius: 15rpx;
-		overflow: hidden;
-	}
-
-	.content-box .top-main-box .topmain .leftimg .tximg {
-		width: 100%;
-	}
-
-	.content-box .top-main-box .topmain .rightcont {
-		color: #fff;
-		flex: 1;
-		box-sizing: border-box;
-		padding-left: 25rpx;
-	}
-
-	.content-box .top-main-box .topmain .rightcont .name {
-		font-size: 42rpx;
-		padding-bottom: 10rpx;
-	}
-
-	.content-box .top-main-box .topmain .rightcont .tip,
-	.content-box .top-main-box .topmain .rightcont .tipa {
-		font-size: 34rpx;
-		text-shadow: 1px 1px 1px #000;
-	}
-
-	.content-box .top-main-box .btnmain {
-		width: 100%;
-		position: absolute;
-		left: 0;
-		bottom: 0px;
-		z-index: 5;
-		box-sizing: border-box;
-		padding: 25rpx 5%;
-		background: #fff;
-		display: inline;
-		align-items: center;
-		justify-content: space-between;
-		text-align: left;
-	}
-
-	.content-box .top-main-box .btnmain view {
-		float: left;
-	}
-
-	.content-box .top-main-box .btnmain text {
-		font-size: 24rpx;
-		color: #333333;
-		padding-left: 10rpx;
-		float: left;
-	}
-
-	.content-box .top-maina {
-		width: 100%;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin: 20rpx auto;
-	}
-
-	.content-box .top-maina view {
-		width: 48%;
-		border-radius: 15rpx;
-		text-align: center;
-		padding: 25rpx 0;
-		font-size: 18px;
-	}
-
-	.content-box .top-maina .left {
-		border: 1px solid #007AFF;
-		color: #007AFF;
-		width: 48%;
-	}
-
-	.content-box .top-maina .right {
-		background: #007AFF;
-		border: 1px solid #007AFF;
-		color: #fff;
-		width: 48%;
-	}
-
-	.content-box .top-mainb {
-		width: 100%;
-		overflow: scroll;
-		padding: 15rpx 0;
-		overflow-x: hidden;
-	}
-
-	.content-box .top-mainb .conta {
-		width: 100%;
-		overflow-x: auto;
-		word-break: keep-all;
-		/* 不换行 */
-		white-space: nowrap;
-		/* 不换行 */
-		padding-bottom: 20rpx;
-	}
-
-	.content-box .top-mainb .conta .cont {
-		display: inline-block;
-		margin-right: 20rpx;
-		background: #fff;
-		box-shadow: 0px 0px 8px #cccccc;
-		border-radius: 10rpx;
-		overflow: hidden;
-	}
-
-	.content-box .top-mainb .conta .cont .box {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		box-sizing: border-box;
-		padding: 15rpx 20rpx;
-	}
-
-	.content-box .top-mainb .conta .cont .box image {
-		width: 80rpx;
-		height: 80rpx;
-	}
-
-	.content-box .top-mainb .conta .cont .box .right {
-		flex: 1;
-		box-sizing: border-box;
-		padding-left: 10rpx;
-	}
-
-	.content-box .top-mainb .conta .cont .box .right text {
-		display: block;
-		font-size: 30rpx;
-	}
-
-	.content-box .top-mainb .conta .cont .box .right .tit {
-		font-size: 34rpx;
-	}
-
-	.content-box .top-mainc {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 20rpx 10rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin: 10rpx auto;
-		background: #fff;
-	}
-
-	.content-box .top-mainc .left {
-		flex: 1;
-		display: flex;
-		align-items: center;
-	}
-
-	.content-box .top-mainc .left text {
-		font-size: 28rpx;
-		color: #555555;
-	}
-
-	.content-box .top-mainc .left image {
-		width: 60rpx;
-		height: 60rpx;
-		margin-right: 5rpx;
-		border-radius: 10rpx;
-	}
-
-	.content-box .top-mainc .right {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	.content-box .top-mainc .right text {
-		font-size: 28rpx;
-		color: #555555;
-		padding-right: 10rpx;
-	}
-
-	.content-box .top-mainc .right image {
-		width: 40rpx;
-		height: 40rpx;
-	}
-
-	.content-box .top-main-tit {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 20rpx 10rpx;
-		display: flex;
-		align-items: center;
-	}
-
-	.content-box .top-main-tit image {
-		width: 60rpx;
-		height: 60rpx;
-	}
-
-	.content-box .top-main-tit text {
-		color: #333;
-		font-size: 18px;
-		padding-left: 10rpx;
-	}
-
-	.content-box .top-maind {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 40rpx 5%;
-		background: #fff;
-		box-shadow: 0px 0px 8px #cccccc;
-	}
-
-	.content-box .top-maind .topmain {
-		width: 100%;
-		box-sizing: border-box;
-		display: flex;
-		align-items: flex-start;
-	}
-
-	.content-box .top-maind .topmain .leftimg {
-		width: 120rpx;
-		height: 120rpx;
-		border-radius: 15rpx;
-		overflow: hidden;
-	}
-
-	.content-box .top-maind .topmain .leftimg .tximg {
-		width: 100%;
-	}
-
-	.content-box .top-maind .topmain .rightcont {
-		color: #555;
-		flex: 1;
-		box-sizing: border-box;
-		padding-left: 25rpx;
-		line-height: 42rpx;
-		font-size: 28rpx;
-	}
-
-	.content-box .top-maind .toptip {
-		width: 100%;
-	}
-
-	.content-box .top-maind .toptip .box {
-		display: inline-block;
-		margin-top: 25rpx;
-		padding: 10rpx 15rpx;
-		background: #e6e6e6;
-		border-radius: 10rpx;
-		overflow: hidden;
-		margin-right: 20rpx;
-	}
-
-	.content-box .top-maind .toptip .box image {
-		width: 30rpx;
-		height: 30rpx;
-	}
-
-	.content-box .top-maind .toptip .box text {
-		font-size: 28rpx;
-		padding-left: 10rpx;
-	}
-
-	.bottombtn {
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		height: 60px;
-		background: #007AFF;
-		color: #fff;
-		line-height: 60px;
-		text-align: center;
-	}
-
-	.bottom-block {
-		display: block;
-		width: 100%;
-		height: 80px;
+	/deep/ .tui-list-cell {
+		border-bottom: 2rpx solid #cccccc;
 	}
 }
 </style>

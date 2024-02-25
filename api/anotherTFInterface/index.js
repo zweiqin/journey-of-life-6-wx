@@ -18,6 +18,9 @@ export const addEnterpriseUserLabelSaveApi = (data) => AnotherTFRequest('/dtsEnt
 // 修改用户标签
 export const updateByIdEnterpriseUserLabelApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLabel/updateById', data, 'POST')
 
+// 查询标签详情
+export const getEnterpriseUserLabelDetailApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLabel/xxx', data)
+
 // 删除用户标签
 export const deleteByIdEnterpriseUserLabelApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLabel/deleteById', data, 'POST')
 

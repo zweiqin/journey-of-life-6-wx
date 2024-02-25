@@ -19,7 +19,6 @@
 						v-model="loginQuery.phone" label="+ 86" type="number" padding="26rpx 20rpx 26rpx 0"
 						placeholder-style="color: #f3c1c4;font-size: 32rpx;" label-color="#ffffff" border-color="#EA5B1D"
 						placeholder="请输入手机号码" background-color="transparent" :border-top="false" color="#ffffff"
-						style="border-bottom: 2rpx solid #ffffff;"
 					></tui-input>
 				</view>
 				<view v-if="loginType === 'password'">
@@ -27,7 +26,6 @@
 						v-model="loginQuery.password" type="password" padding="26rpx 20rpx 26rpx 0"
 						placeholder-style="color: #f3c1c4;font-size: 32rpx;" background-color="transparent" :border-top="false"
 						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入密码" color="#ffffff"
-						style="border-bottom: 2rpx solid #ffffff;"
 					>
 						<template #right>
 							<text style="font-size: 30rpx;color: #dddddd;" @click="isShowResettingPasswordDialog = true">忘记密码</text>
@@ -39,7 +37,6 @@
 						v-model="loginQuery.verificationCode" padding="26rpx 20rpx 26rpx 0"
 						placeholder-style="color: #f3c1c4;font-size: 32rpx;" background-color="transparent" :border-top="false"
 						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入验证码" color="#ffffff"
-						style="border-bottom: 2rpx solid #ffffff;"
 					>
 						<template #right>
 							<tui-countdown-verify
@@ -54,11 +51,11 @@
 			</tui-form>
 		</view>
 		<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;margin-top: 80rpx;">
-			<view style="text-align: center;">
+			<view style="text-align: center;" class="login-btn">
 				<tui-button
 					type="white" width="640rpx" height="82rpx" :size="38"
 					margin="40rpx 0 0" shape="circle"
-					style="font-weight: bold;color: #ea5b1d!important;" @click="handleLogin"
+					@click="handleLogin"
 				>
 					登录
 				</tui-button>
@@ -349,6 +346,17 @@ export default {
 	.login-form {
 		margin-top: 20rpx;
 		padding: 146rpx 48rpx 10rpx 48rpx;
+
+		/deep/ .tui-input__wrap {
+			border-bottom: 2rpx solid #ffffff;
+		}
+	}
+
+	.login-btn {
+		/deep/ .tui-btn {
+			font-weight: bold;
+			color: #ea5b1d !important;
+		}
 	}
 }
 </style>

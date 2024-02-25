@@ -1,5 +1,6 @@
 <template>
 	<view class="j-header-container">
+		<!-- #ifdef H5 || APP -->
 		<JBack :width="$attrs.width" :height="$attrs.height" :tabbar="$attrs.tabbar" :dark="dark"></JBack>
 		<view
 			class="title" :style="{
@@ -11,6 +12,7 @@
 		<view class="footerFn">
 			<slot name="ftFn"></slot>
 		</view>
+		<!-- #endif -->
 	</view>
 </template>
 

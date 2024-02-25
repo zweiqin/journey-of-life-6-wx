@@ -3,13 +3,13 @@
     class="loading-more-container"
     v-show="['loading', 'no-more'].includes(status)"
   >
-    <div id="loading-wrapper" v-show="status === 'loading'">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
+    <view id="loading-wrapper" v-show="status === 'loading'">
+      <view class="dot"></view>
+      <view class="dot"></view>
+      <view class="dot"></view>
+      <view class="dot"></view>
+      <view class="dot"></view>
+    </view>
 
     <view class="no-more" v-show="status === 'no-more'">{{ text }}</view>
   </view>

@@ -41,12 +41,38 @@
 					"path": "another-user/calling-card/agree",
 					"style": {
 						"navigationBarTitleText": "用户协议"
+						// 对于APP，单独设置uniapp自带的头部导航栏，则有头部导航栏，否则没有；当然也可以不设置，而使用页面头部栏。
+						// "app-plus": {
+						// 	// #ifdef APP
+						// 	"titleNView": {
+						// 		"type": "default"
+						// 	}
+						// 	// #endif
+						// }
+						// 相当于全局设置的。对于小程序，如果设置导航栏自定义，则没有了小程序自身的头部导航栏，否则依然存在。
+						// "navigationStyle": "custom",
+						// 相当于全局设置的。
+						// "app-plus": {
+						// 	"titleNView": false
+						// } //去掉
 					}
 				},
 				{
-					"path": "another-user/calling-card/edit",
+					"path": "another-user/calling-card-management/calling-card-form",
 					"style": {
-						"navigationBarTitleText": "编辑名片"
+						"navigationBarTitleText": "名片表单"
+					}
+				},
+				{
+					"path": "another-user/calling-card-management/label-list",
+					"style": {
+						"navigationBarTitleText": "名片标签列表"
+					}
+				},
+				{
+					"path": "another-user/calling-card-management/card-label-form",
+					"style": {
+						"navigationBarTitleText": "名片标签表单"
 					}
 				}
 			]
@@ -79,10 +105,18 @@
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"navigationBarTitleText": "uni-card",
 		"navigationBarTextStyle": "black",
+		// "navigationStyle": "custom",
+		// 对于小程序、APP、H5，设置了，则没有了uniapp自带的头部导航栏。
 		"titleNView": false,
 		"app-plus": {
 			"animationType": "slide-in-right",
 			"animationDuration": 300
 		}
+		// 无用：
+		// "mp-weixin": {
+		// 	"usingComponents": {
+		// 		"tui-no-data": "/components/thorui/tui-no-data/tui-no-data" // /pages/index/index
+		// 	}
+		// }
 	}
 }

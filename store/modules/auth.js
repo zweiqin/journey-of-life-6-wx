@@ -403,7 +403,8 @@ export default {
 				// 			}
 				// 			resolve(res.data)
 				try {
-					await store.dispatch('user/getElectronicCardAction')
+					const cardInfo = await store.dispatch('user/getElectronicCardAction')
+					await store.dispatch('user/getElectronicLabelAction', { id: cardInfo.enterpriseUserId })
 					resolve()
 				} catch (err) {
 					reject(err)
