@@ -404,7 +404,7 @@ export default {
 				// 			resolve(res.data)
 				try {
 					const cardInfo = await store.dispatch('user/getElectronicCardAction')
-					await store.dispatch('user/getElectronicLabelAction', { id: cardInfo.enterpriseUserId })
+					if (cardInfo.enterpriseUserId) await store.dispatch('user/getElectronicLabelAction', { id: cardInfo.enterpriseUserId })
 					resolve()
 				} catch (err) {
 					reject(err)

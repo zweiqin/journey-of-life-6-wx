@@ -9,16 +9,15 @@
 			<tui-form ref="form" :show-message="false">
 				<view class="formItem">
 					<tui-input
-						v-model="registerQuery.phone" placeholder-class="inputs" border-color="#EA5B1D"
-						placeholder="请输入电话号码" :border-top="false" color="#222229" clearable
-						size="34"
+						v-model="registerQuery.phone" placeholder-class="inputs" border-color="#EA5B1D" placeholder="请输入电话号码"
+						:border-top="false" color="#222229" clearable size="34"
 					></tui-input>
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="registerQuery.verificationCode" padding="26rpx 20rpx 26rpx 0"
-						placeholder-style="color: #f3c1c4;font-size: 32rpx;" background-color="transparent" :border-top="false"
-						border-color="#EA5B1D" label-color="#ffffff" placeholder="请输入验证码" color="#222229"
+						v-model="registerQuery.verificationCode" placeholder-style="color: #f3c1c4;font-size: 32rpx;"
+						background-color="transparent" :border-top="false" border-color="#EA5B1D" label-color="#ffffff"
+						placeholder="请输入验证码" color="#222229"
 					>
 						<template #right>
 							<tui-countdown-verify
@@ -31,9 +30,8 @@
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="registerQuery.password" placeholder-class="inputs" type="password"
-						border-color="#EA5B1D" placeholder="请输入密码" :border-top="false" color="#222229"
-						clearable
+						v-model="registerQuery.password" placeholder-class="inputs" type="password" border-color="#EA5B1D"
+						placeholder="请输入密码" :border-top="false" color="#222229" clearable
 						size="34"
 					></tui-input>
 				</view>
@@ -55,8 +53,26 @@
 		>
 			确定
 		</button>
-		<view class="agreement">
-			登录即代表你已阅读并同意<text style="color: #222229;">《用户服务协议》</text>
+		<view
+			style="display: flex;justify-content: center;align-items: center;margin-top: 50rpx;padding: 0rpx 40rpx;font-size: 28rx;color: #888889;"
+		>
+			<radio
+				style="transform:scale(0.8)" color="#CE2601" :checked="isReadAgreement"
+				@click="isReadAgreement = !isReadAgreement"
+			/>
+			<view>
+				我已阅读并同意<text
+					style="color: #222229;"
+					@click="go('pages/service-agreement/service-agreement')"
+				>
+					《用户服务协议》
+				</text>以及<text
+					style="color: #222229;"
+					@click="go('pages/service-agreement/privacy-policy')"
+				>
+					《隐私政策》
+				</text>
+			</view>
 		</view>
 		<tui-toast ref="toast"></tui-toast>
 		<tui-modal :show="hasRegister" custom fade-i :button="[]" @cancel="hasRegister = false">
@@ -96,6 +112,7 @@ export default {
 				phone: '',
 				verificationCode: ''
 			},
+			isReadAgreement: false,
 			hasRegister: false
 		}
 	},
@@ -144,6 +161,7 @@ export default {
 				}
 			])
 				.then(() => {
+					if (!this.isReadAgreement) return this.$showToast('请先同意《用户服务协议》以及《隐私政策》')
 					updatePhoneLoginRegisterApi({
 						type: 1,
 						phone: this.registerQuery.phone,
@@ -221,20 +239,6 @@ export default {
 		background: #C6C7CB;
 		color: #FFFFFF;
 		font-size: 32rpx;
-	}
-
-	.agreement {
-		position: absolute;
-		bottom: 48rpx;
-		left: 50%;
-		transform: translateX(-50%);
-		white-space: nowrap;
-		font-size: 28rx;
-		font-weight: 350;
-		line-height: 36rpx;
-		text-align: center;
-		letter-spacing: 0rpx;
-		color: #888889;
 	}
 }
 </style>

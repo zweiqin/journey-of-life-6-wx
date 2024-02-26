@@ -12,7 +12,7 @@
 
 <script>
 import FieldPaneCLF from './components/field-pane-clf.vue'
-import { getEnterpriseUserLabelDetailApi, updateByIdEnterpriseUserApi, addEnterpriseUserSaveApi } from '../../../api/anotherTFInterface'
+import { getEnterpriseUserLabelDetailApi, updateByIdEnterpriseUserLabelApi, addEnterpriseUserLabelSaveApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'CardLabelForm',
@@ -70,12 +70,12 @@ export default {
 		async getElectronicLabel(id) {
 			uni.showLoading()
 			try {
-				const data = await getEnterpriseUserLabelDetailApi({ labelId: id })
+				const res = await getEnterpriseUserLabelDetailApi({ labelId: id })
 				uni.hideLoading()
-				// this.form.basicInfo.labelId = data.labelId || ''
-				this.form.basicInfo.createTime = data.createTime || ''
-				this.form.basicInfo.enterpriseUserId = data.enterpriseUserId || ''
-				this.form.basicInfo.labelName = data.labelName || ''
+				// this.form.basicInfo.labelId = res.data.labelId || ''
+				this.form.basicInfo.createTime = res.data.createTime || ''
+				this.form.basicInfo.enterpriseUserId = res.data.enterpriseUserId || ''
+				this.form.basicInfo.labelName = res.data.labelName || ''
 			} catch (err) {
 				console.log(err)
 				uni.hideLoading()
@@ -101,15 +101,15 @@ export default {
 				content: '确认提交名片标签表单？',
 				success: (res) => {
 					if (res.confirm) {
-						if (data.id) {
-							updateByIdEnterpriseUserApi(data).then((res) => {
+						if (data.labelId) {
+							updateByIdEnterpriseUserLabelApi(data).then((res) => {
 								this.$showToast('提交成功')
 								setTimeout(() => {
 									uni.navigateBack()
 								}, 2000)
 							})
 						} else {
-							addEnterpriseUserSaveApi(data).then((res) => {
+							addEnterpriseUserLabelSaveApi(data).then((res) => {
 								this.$showToast('提交成功')
 								setTimeout(() => {
 									uni.navigateBack()

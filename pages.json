@@ -31,6 +31,18 @@
 			"style": {
 				"navigationBarTitleText": "注册"
 			}
+		},
+		{
+			"path": "pages/service-agreement/service-agreement",
+			"style": {
+				"navigationBarTitleText": "团蜂服务协议"
+			}
+		},
+		{
+			"path": "pages/service-agreement/privacy-policy",
+			"style": {
+				"navigationBarTitleText": "团蜂隐私协议"
+			}
 		}
 	],
 	"subPackages": [
@@ -41,6 +53,12 @@
 					"path": "another-user/calling-card/agree",
 					"style": {
 						"navigationBarTitleText": "用户协议"
+					}
+				},
+				{
+					"path": "another-user/calling-card/card-sharing",
+					"style": {
+						"navigationBarTitleText": "名片分享"
 						// 对于APP，单独设置uniapp自带的头部导航栏，则有头部导航栏，否则没有；当然也可以不设置，而使用页面头部栏。
 						// "app-plus": {
 						// 	// #ifdef APP

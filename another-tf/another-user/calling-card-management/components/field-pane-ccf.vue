@@ -6,30 +6,32 @@
 				v-if="(item.field === 'id') || (item.field === 'label') || (item.field === 'enterpriseUserId') || (item.field === 'buyerId')"
 			>
 			</view>
-			<view v-else-if="item.field === 'birthday'" class="item">
-				<template>
-					<view
-						class="input-wrapper" :style="{
-							'flex-direction': item.type === 'textarea' ? 'column' : '',
-							'align-items': item.type === 'textarea' ? 'flex-start' : ''
-						}"
-					>
-						<view class="sub-title">{{ item.label }}</view>
+			<view v-else-if="item.field === 'birthday'">
+				<view class="item">
+					<template>
+						<view
+							class="input-wrapper" :style="{
+								'flex-direction': item.type === 'textarea' ? 'column' : '',
+								'align-items': item.type === 'textarea' ? 'flex-start' : ''
+							}"
+						>
+							<view class="sub-title">{{ item.label }}</view>
 
-						<view v-if="item.type === 'time' && item.field === 'birthday'" class="input">
-							<input
-								:value="form[item.field]" :disabled="true" type="text"
-								:placeholder="item.placeholder"
-								@click="$refs.dateTimeTradeB[0].show()"
-							/>
-							<tui-datetime
-								ref="dateTimeTradeB" :type="2" radius
-								@confirm="handleInput(item.field, $event)"
-							></tui-datetime>
+							<view v-if="item.type === 'time' && item.field === 'birthday'" class="input">
+								<input
+									:value="form[item.field]" :disabled="true" type="text"
+									:placeholder="item.placeholder"
+									@click="$refs.dateTimeTradeB[0].show()"
+								/>
+								<tui-datetime
+									ref="dateTimeTradeB" :type="2" radius
+									@confirm="handleInput(item.field, $event)"
+								></tui-datetime>
+							</view>
+
 						</view>
-
-					</view>
-				</template>
+					</template>
+				</view>
 			</view>
 			<view v-else-if="item.field === 'styleId'">
 				<view class="item">
@@ -53,22 +55,24 @@
 			<view
 				v-else-if="(item.field === 'enterpriseName') || (item.field === 'enterpriseDuties') || (item.field === 'enterpriseDepartment')"
 			>
-				<view v-if="form.isEnterprise === '1'" class="item">
-					<template>
-						<view
-							class="input-wrapper" :style="{
-								'flex-direction': item.type === 'textarea' ? 'column' : '',
-								'align-items': item.type === 'textarea' ? 'flex-start' : ''
-							}"
-						>
-							<view class="sub-title">{{ item.label }}</view>
-							<input
-								v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
-								:type="item.field === 'phone' ? 'number' : 'text'" :placeholder="item.placeholder"
-								@input="handleInput(item.field, $event)"
-							/>
-						</view>
-					</template>
+				<view v-if="form.isEnterprise === 'true'">
+					<view class="item">
+						<template>
+							<view
+								class="input-wrapper" :style="{
+									'flex-direction': item.type === 'textarea' ? 'column' : '',
+									'align-items': item.type === 'textarea' ? 'flex-start' : ''
+								}"
+							>
+								<view class="sub-title">{{ item.label }}</view>
+								<input
+									v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
+									:type="item.field === 'phone' ? 'number' : 'text'" :placeholder="item.placeholder"
+									@input="handleInput(item.field, $event)"
+								/>
+							</view>
+						</template>
+					</view>
 				</view>
 				<view v-else></view>
 			</view>
@@ -113,7 +117,7 @@
 							@change="(e) => { }"
 						>
 							<view style="display: flex;">
-								<tui-label v-for="(part, index) in [{ name: '是', value: '1' }, { name: '否', value: '0' }]" :key="index">
+								<tui-label v-for="(part, index) in [{ name: '是', value: 'true' }, { name: '否', value: 'false' }]" :key="index">
 									<tui-list-cell padding="16rpx">
 										<view>
 											<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">

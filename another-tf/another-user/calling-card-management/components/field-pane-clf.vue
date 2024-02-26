@@ -4,7 +4,7 @@
 		<view v-for="item in fields" :key="item.label">
 			<view v-if="item.field === 'id'"></view>
 			<view v-else-if="(item.field === 'labelId') || (item.field === 'createTime')">
-				<template v-if="form[item.field]">
+				<view v-if="form[item.field]" class="item">
 					<view
 						class="input-wrapper" :style="{
 							'flex-direction': item.type === 'textarea' ? 'column' : '',
@@ -14,10 +14,11 @@
 						<view class="sub-title">{{ item.label }}</view>
 						<input
 							v-if="item.type === 'input'" :value="form[item.field]" class="input" disabled
-							type="text" :placeholder="item.placeholder"
+							type="text"
+							:placeholder="item.placeholder"
 						/>
 					</view>
-				</template>
+				</view>
 			</view>
 			<view v-else class="item">
 				<template>
@@ -30,8 +31,7 @@
 						<view class="sub-title">{{ item.label }}</view>
 						<input
 							v-if="item.type === 'input'" :value="form[item.field]" class="input"
-							:disabled="item.field === 'enterpriseUserId'"
-							:type="item.field === 'enterpriseUserId' ? 'number' : 'text'"
+							:disabled="item.field === 'enterpriseUserId'" :type="item.field === 'enterpriseUserId' ? 'number' : 'text'"
 							:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
 						/>
 					</view>

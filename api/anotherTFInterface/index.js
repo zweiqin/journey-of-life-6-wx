@@ -1,34 +1,34 @@
 import { AnotherTFRequest } from '../../utils'
 
 // 查询名片信息
-export const getIdEnterpriseUserApi = (data) => AnotherTFRequest('/dtsEnterpriseUser/getId', data)
+export const getIdEnterpriseUserApi = (data) => AnotherTFRequest('/enterpriseUser/getUserId', data)
 
 // 保存名片信息
-export const addEnterpriseUserSaveApi = (data) => AnotherTFRequest('/dtsEnterpriseUser/save', data, 'POST')
+export const addEnterpriseUserSaveApi = (data) => AnotherTFRequest('/enterpriseUser/save', data, 'POST')
 
 // 修改名片信息
-export const updateByIdEnterpriseUserApi = (data) => AnotherTFRequest('/dtsEnterpriseUser/updateById', data, 'POST')
+export const updateByIdEnterpriseUserApi = (data) => AnotherTFRequest('/enterpriseUser/updateById', data, 'POST')
 
 // 查询用户标签
-export const getUserIdEnterpriseUserLabelApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLabel/getUserId', data)
+export const getUserIdEnterpriseUserLabelApi = (data) => AnotherTFRequest('/enterpriseUserLabel/getByLabel', data)
 
 // 新增用户标签
-export const addEnterpriseUserLabelSaveApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLabel/save', data, 'POST')
+export const addEnterpriseUserLabelSaveApi = (data) => AnotherTFRequest('/enterpriseUserLabel/save', data, 'POST')
 
 // 修改用户标签
-export const updateByIdEnterpriseUserLabelApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLabel/updateById', data, 'POST')
+export const updateByIdEnterpriseUserLabelApi = (data) => AnotherTFRequest('/enterpriseUserLabel/updateById', data, 'POST')
 
 // 查询标签详情
-export const getEnterpriseUserLabelDetailApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLabel/xxx', data)
+export const getEnterpriseUserLabelDetailApi = (data) => AnotherTFRequest('/enterpriseUserLabel/getByLabelId', data)
 
 // 删除用户标签
-export const deleteByIdEnterpriseUserLabelApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLabel/deleteById', data, 'POST')
+export const deleteByIdEnterpriseUserLabelApi = (data) => AnotherTFRequest('/enterpriseUserLabel/deleteById', data, 'POST')
 
 // 点赞标签
-export const updateByLabelEnterpriseUserLikeApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLike/getByLabel', data, 'POST')
+export const updateByLabelEnterpriseUserLikeApi = (data) => AnotherTFRequest('/enterpriseUserLike/likeById', data, 'POST')
 
 // 取消点赞标签
-export const updateByIdCanEnterpriseUserLikeApi = (data) => AnotherTFRequest('/dtsEnterpriseUserLike/likeByIdCan', data, 'POST')
+export const updateByIdCanEnterpriseUserLikeApi = (data) => AnotherTFRequest('/enterpriseUserLike/likeByIdCan', data, 'POST')
 
 /**
  * @description 商城相关接口

@@ -62,7 +62,7 @@
                 "oauth" : {
                     "apple" : {},
                     "weixin" : {
-                        "appid" : "wx984383bfd5405df1",
+                        "appid" : "wxb446588ba0dbb9d7",
                         "appsecret" : "",
                         "UniversalLinks" : ""
                     },
@@ -71,7 +71,7 @@
                 "ad" : {},
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx984383bfd5405df1",
+                        "appid" : "wxb446588ba0dbb9d7",
                         "UniversalLinks" : ""
                     }
                 },
@@ -86,7 +86,7 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "wx984383bfd5405df1",
+        "appid" : "wxb446588ba0dbb9d7",
         "setting" : {
             "urlCheck" : false,
             "es6" : false,
