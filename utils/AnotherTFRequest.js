@@ -9,6 +9,8 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 		if (res.token) header.Authorization = res.token
 		if (res.ssoUserInfo && res.ssoUserInfo.token) header['satoken-user'] = res.ssoUserInfo.token
 		// showLoading()
+		let _isShowToast = true
+		if (data._isShowToast === false) (_isShowToast = false) && delete data._isShowToast
 		uni.request({
 			url: base_url + url,
 			data,
@@ -40,11 +42,25 @@ const request = (base_url) => function (url, data = {}, method = 'GET', cb, head
 						})
 						reject(res.data)
 					} else {
-						uni.showToast({
-							title: res.data.message,
-							icon: 'none'
-						})
 						reject(res.data)
+						if (_isShowToast) {
+							// #ifndef MP
+							uni.showToast({
+								title: res.data.message,
+								icon: 'none'
+							})
+							// #endif
+							// #ifdef MP
+							Promise.resolve().then(() => {
+								Promise.resolve().then(() => {
+									uni.showToast({
+										title: res.data.message,
+										icon: 'none'
+									})
+								})
+							})
+						// #endif
+						}
 					}
 				} else {
 					reject(res)

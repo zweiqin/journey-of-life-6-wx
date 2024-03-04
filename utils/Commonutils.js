@@ -1,7 +1,7 @@
-// import { whoami } from '../api/auth'
-import { USER_ID, T_STORAGE_KEY, USER_INFO } from '../constant'
+// import { whoami, getConfigApi } from '../api/auth'
+import { USER_ID, T_STORAGE_KEY, USER_INFO, USER_TOKEN } from '../constant'
+// const wx = require('weixin-js-sdk')
 // import { isNull } from 'lodash-es'
-
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -170,22 +170,125 @@ export const getStorageKeyToken = () => {
 }
 
 /**
+ * 判断当前H5是否在webview中打开
+ */
+
+export const isH5InWebview = () => {
+	const ua = navigator.userAgent.toLowerCase()
+	return typeof ua === 'string' && (ua.includes('webview') || ua.includes('miniprogramhtmlwebview'))
+}
+
+// 判断当前是否处于微信环境
+export const isInWx = () => {
+	// #ifdef H5
+	var ua = navigator.userAgent.toLowerCase()
+	return ua.match(/MicroMessenger/i) == 'micromessenger'
+	// #endif
+
+	// #ifdef APP
+	return false
+	// #endif
+}
+
+/**
  * 跳转到新团蜂入驻端项目
  * @returns
  */
 
-export const jumpToOtherProject = (url, cb = () => { }) => {
-	// #ifdef H5
-	window.location.href = url
-	// #endif
-	// #ifdef APP
-	plus.runtime.openURL(url, cb)
-	// #endif
-	// #ifdef MP
-	uni.redirectTo({
-		url: `/user/view?target=${url}`
-	})
-	// #endif
+export const jumpToOtherProject = ({ isInMiniProgram, id, appId, url, toType, query, montageTerminal }, cb = () => { }) => {
+	if (toType === 'H5') {
+		// #ifdef H5
+		window.location.href = url
+		// #endif
+		// #ifdef APP
+		plus.runtime.openURL(url, cb)
+		// #endif
+		// #ifdef MP
+		uni.redirectTo({
+			url: `/user/view?target=${url}`
+		})
+		// #endif
+	} else if (toType === 'MP') {
+		if (isInWx()) {
+			if (isInMiniProgram || isH5InWebview()) {
+				wx.miniProgram.navigateTo({ // 先跳去本小程序其它页面，再跳去其它小程序页面
+					url: query && montageTerminal && montageTerminal.includes(6) ? `/${url}${query}` : `/${url}`,
+					fail: () => {
+						setTimeout(() => { uni.switchTab({	url: '/pages/index/index' }) }, 2000)
+					}
+				})
+			} else {
+				if (!getStorageKeyToken()) return
+				const currentUrl = window.location.href.replace('#', 'ericToken')
+				getConfigApi({
+					url: currentUrl,
+					token: uni.getStorageSync(USER_TOKEN)
+				}).then(({ data }) => {
+					wx.config({
+						debug: false, // 开启调试模式
+						appId: data.appId, // 必填，公众号的唯一标识
+						timestamp: data.timestamp, // 必填，生成签名的时间戳
+						nonceStr: data.nonceStr, // 必填，生成签名的随机串
+						signature: data.signature, // 必填，签名，见附录1
+						jsApiList: [
+							'updateAppMessageShareData',
+							'updateTimelineShareData',
+							'onMenuShareAppMessage',
+							'onMenuShareTimeline'
+						], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+						openTagList: [ 'wx-open-launch-weapp' ]
+					})
+					wx.ready(function () {
+						// config信息验证成功
+						// console.log(res);
+					})
+					wx.error(function (res) {
+						// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+						// alert('error:'+JSON.stringify(res));
+					})
+				})
+			}
+		} else {
+			// #ifdef H5
+			location.href = 'weixin://dl/business/?appid=wxb446588ba0dbb9d7&path=pages/index/index'
+			// #endif
+			// #ifdef APP
+			plus.share.getServices(function (result) {
+				let sweixin = null
+				for (const i in result) {
+					if (result[i].id == 'weixin') {
+						sweixin = result[i]
+					}
+				}
+				if (sweixin) {
+					sweixin.launchMiniProgram({
+						id, // 微信小程序的原始ID（"g_"开头的字符串）
+						type: 0,
+						path: query && montageTerminal && montageTerminal.includes(1) ? url + query : url
+					})
+				}
+			}, function (e) {
+				console.log('获取分享服务列表失败：' + e.message)
+			})
+			// #endif
+			// #ifdef MP
+			uni.navigateToMiniProgram({
+				appId,
+				path: query && montageTerminal && (montageTerminal.includes(2) || montageTerminal.includes(4)) ? url + query : url,
+				extraData: {},
+				success: (res) => {
+					console.log('打开成功')
+				},
+				fail: (err) => {
+					console.log('打开失败', err)
+				},
+				complete: (result) => {
+					console.log(result)
+				}
+			})
+			// #endif
+		}
+	}
 }
 
 /**
@@ -312,18 +415,6 @@ export const getUrlCode = () => {
 }
 // #endif
 
-// 判断当前是否处于微信环境
-export const isInWx = () => {
-	// #ifdef H5
-	var ua = navigator.userAgent.toLowerCase()
-	return ua.match(/MicroMessenger/i) == 'micromessenger'
-	// #endif
-
-	// #ifdef APP
-	return false
-	// #endif
-}
-
 /**
  * 大数转小数 12345.123 = 1.23万
  */
@@ -366,15 +457,6 @@ export const tradeOrderNo = function () {
 	const yyyyMMddHHmmss = `${year}${month}${day}${hour}${minutes}${seconds}`
 	return yyyyMMddHHmmss + Math.random().toString(36)
 		.substr(2, 9)
-}
-
-/**
- * 判断当前H5是否在webview中打开
- */
-
-export const isH5InWebview = () => {
-	const ua = navigator.userAgent.toLowerCase()
-	return typeof ua === 'string' && (ua.includes('webview') || ua.includes('miniprogramhtmlwebview'))
 }
 
 /**

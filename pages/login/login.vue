@@ -99,7 +99,7 @@
 				</view>
 				<!-- #endif -->
 				<view
-					v-if="(terminal === 3) || (terminal === 2)"
+					v-if="(terminal === 6) || (terminal === 3) || (terminal === 2)"
 					style="display: flex;flex-direction: column;align-items: center;padding-left: 48rpx;"
 				>
 					<view style="width: fit-content;padding: 14rpx;border: 1rpx solid #ffffff;border-radius: 48rpx;">
@@ -173,7 +173,7 @@ export default {
 			uni.switchTab({
 				url: '/pages/index/index'
 			})
-		} else if (this.$store.state.app.terminal === 3) {
+		} else if ((this.$store.state.app.terminal === 6) || (this.$store.state.app.terminal === 3)) {
 			const code = getUrlCode().code
 			if (code) this.handleWXLogin()
 		}

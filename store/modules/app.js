@@ -1,5 +1,5 @@
 import { CHANGE_IS_IN_MINIPROGRAM, CHANGE_SYSTERM_INFO, CHANGE_SYSTERM_TERMINAL } from './type'
-import { isInWx } from '../../utils'
+import { isInWx, isH5InWebview } from '../../utils'
 
 export default {
 	namespaced: true,
@@ -44,10 +44,14 @@ export default {
 				})
 			})
 		},
-		getSystermTerminal({ commit }) {
+		getSystermTerminal({ state, dispatch, commit }) {
 			return new Promise((resolve, reject) => {
 				if (isInWx()) {
-					commit(CHANGE_SYSTERM_TERMINAL, 3)
+					if (state.isInMiniProgram || isH5InWebview()) {
+						commit(CHANGE_SYSTERM_TERMINAL, 6)
+					} else {
+						commit(CHANGE_SYSTERM_TERMINAL, 3)
+					}
 				} else {
 					// #ifdef H5
 					commit(CHANGE_SYSTERM_TERMINAL, 5) // H5包含pc和移动端浏览器和微信浏览器的可能
