@@ -118,7 +118,7 @@
 				<tui-input v-model="resettingFormData.phone" label="手机号" type="number" placeholder="请输入手机号"></tui-input>
 				<tui-input v-model="resettingFormData.password" label="密码" type="password" placeholder="请输入密码"></tui-input>
 				<tui-input
-					v-model="resettingFormData.passwordAgain" label="确认密码" type="password"
+					v-model="resettingFormData.newPassword" label="确认密码" type="password"
 					placeholder="请再次输入密码"
 				></tui-input>
 				<tui-input v-model="resettingFormData.verificationCode" label="验证码" type="number" placeholder="请输入验证码">
@@ -137,7 +137,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { T_REDIRECT_TYPE, USER_ID, T_STORAGE_KEY } from '../../constant'
-import { getVerifyCodeApi, updatePasswordUserApi } from '../../api/anotherTFInterface'
+import { getVerifyCodeApi, updateForgetPasswordUserApi } from '../../api/anotherTFInterface'
 import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
 import { getUrlCode } from '../../utils'
 
@@ -154,7 +154,7 @@ export default {
 			resettingFormData: {
 				phone: '',
 				password: '',
-				passwordAgain: '',
+				newPassword: '',
 				verificationCode: ''
 			},
 			isShowResettingPasswordDialog: false
@@ -274,11 +274,11 @@ export default {
 				if (!this.resettingFormData.phone) return this.$showToast('请填写手机号')
 				if (!this.resettingFormData.verificationCode) return this.$showToast('请填写验证码')
 				if (!this.resettingFormData.password) return this.$showToast('请设置密码！')
-				if (this.resettingFormData.password !== this.resettingFormData.passwordAgain) return this.$showToast('密码不一致')
+				if (this.resettingFormData.password !== this.resettingFormData.newPassword) return this.$showToast('密码不一致')
 				uni.showLoading({
 					title: '操作中'
 				})
-				updatePasswordUserApi({ ...this.resettingFormData })
+				updateForgetPasswordUserApi({ ...this.resettingFormData })
 					.then(({ data }) => {
 						uni.hideLoading()
 						this.$showToast('重置成功')
@@ -290,7 +290,7 @@ export default {
 			this.resettingFormData.phone = ''
 			this.resettingFormData.verificationCode = ''
 			this.resettingFormData.password = ''
-			this.resettingFormData.passwordAgain = ''
+			this.resettingFormData.newPassword = ''
 			this.isShowResettingPasswordDialog = false
 		}
 	}

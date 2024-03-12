@@ -79,7 +79,8 @@ export default {
 					headImage: '',
 					code: ''
 				}
-				if (loginData.terminal === 3) {
+				if ((loginData.terminal === 6) || (loginData.terminal === 3)) {
+					loginData.terminal = 3
 					const appid = 'wxb19ccb829623be12' // 团蜂wxb19ccb829623be12，新巨蜂wx603b04a561e4683e，别的wxdf390bb4f8a67641
 					const local = store.state.app.isInMiniProgram ? `${A_TF_MAIN}/#${pageUrl || '/pages/login/login'}?miniProgram=1` : `${A_TF_MAIN}/#${pageUrl || '/pages/login/login'}`
 					const code = getUrlCode().code

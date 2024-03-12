@@ -37,7 +37,7 @@
 				</view>
 				<view class="formItem">
 					<tui-input
-						v-model="registerQuery.passwordAgain" placeholder-class="inputs" type="password"
+						v-model="registerQuery.newPassword" placeholder-class="inputs" type="password"
 						border-color="#EA5B1D" placeholder="请再次确认密码" :border-top="false" color="#222229"
 						clearable
 						size="34"
@@ -48,7 +48,7 @@
 		</view>
 		<button
 			class="loginBtn"
-			:class="{ disbleds: !!(registerQuery.password && registerQuery.passwordAgain && registerQuery.phone && registerQuery.verificationCode) }"
+			:class="{ disbleds: !!(registerQuery.password && registerQuery.newPassword && registerQuery.phone && registerQuery.verificationCode) }"
 			@click="addAcount"
 		>
 			确定
@@ -108,7 +108,7 @@ export default {
 		return {
 			registerQuery: {
 				password: '',
-				passwordAgain: '',
+				newPassword: '',
 				phone: '',
 				verificationCode: ''
 			},
@@ -155,7 +155,7 @@ export default {
 					msg: ['请输入密码', '密码为8~20位英文和数字组合']
 				},
 				{
-					name: 'passwordAgain',
+					name: 'newPassword',
 					rule: ['required', 'isSame:password'],
 					msg: ['请再次确认密码', '两次密码不一致']
 				}

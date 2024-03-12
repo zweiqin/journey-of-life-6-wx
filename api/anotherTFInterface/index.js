@@ -72,3 +72,6 @@ export const getUserInfoApi = (data) => AnotherTFRequest('/user/getUser', data)
 
 // 个人系信息修改
 export const updateUserInfoApi = (data) => AnotherTFRequest('/user/update', data, 'POST')
+
+// 重置密码
+export const updateForgetPasswordUserApi = (data) => AnotherTFRequest('/user/forgetPassword', data, 'POST')
